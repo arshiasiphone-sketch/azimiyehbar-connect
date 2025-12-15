@@ -24,14 +24,9 @@ export function HeroSection() {
             </div>
 
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              با{" "}
-              <span className="text-gradient">عظیمیه‌بار</span>
-              <br />
-              <span className="inline-flex items-center gap-3">
-                <span className="text-accent persian-nums font-black text-5xl md:text-6xl lg:text-7xl">1850</span>
-              </span>
-              <br />
-              حمل و نقل سریع و مطمئن
+              <span className="text-gradient">عظیمیه بار</span>{" "}
+              <span className="text-accent persian-nums font-black">۱۸۵۰</span>
+              : حمل سریع و مطمئن
             </h1>
 
             <p className="text-lg md:text-xl text-primary-foreground/80 max-w-lg leading-relaxed">
