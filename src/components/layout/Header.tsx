@@ -30,37 +30,47 @@ export function Header() {
       className={cn(
         "fixed top-0 right-0 left-0 z-50 transition-all duration-300",
         isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-md py-2"
-          : "bg-transparent py-4"
+          ? "bg-background/95 backdrop-blur-md shadow-md py-3"
+          : "bg-transparent py-5"
       )}
     >
       <div className="container-custom flex items-center justify-between">
-        {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
-          <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
-            <Truck className="w-6 h-6 text-primary-foreground" />
+        {/* Logo - Larger with more whitespace */}
+        <Link to="/" className="flex items-center gap-3 pl-6">
+          <div className="w-12 h-12 rounded-xl gradient-primary flex items-center justify-center shadow-lg">
+            <Truck className="w-7 h-7 text-primary-foreground" />
           </div>
-          <span className={cn(
-            "text-xl font-bold transition-colors",
-            isScrolled ? "text-foreground" : "text-primary-foreground"
-          )}>
-            عظیمیه‌بار
-          </span>
+          <div className="flex flex-col">
+            <span className={cn(
+              "text-xl font-bold transition-colors leading-tight",
+              isScrolled ? "text-foreground" : "text-primary-foreground"
+            )}>
+              عظیمیه‌بار
+            </span>
+            <span className={cn(
+              "text-lg font-bold persian-nums transition-colors",
+              isScrolled ? "text-primary" : "text-accent"
+            )}>
+              1850
+            </span>
+          </div>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8">
+        {/* Desktop Navigation - Larger font with hover effects */}
+        <nav className="hidden lg:flex items-center gap-10">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               to={link.href}
               className={cn(
-                "text-sm font-medium transition-colors hover:text-primary",
+                "text-base font-medium transition-all duration-300 relative py-2",
+                "after:content-[''] after:absolute after:bottom-0 after:right-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all after:duration-300",
+                "hover:after:w-full",
                 location.pathname === link.href
-                  ? "text-primary"
+                  ? "text-primary after:w-full"
                   : isScrolled
-                  ? "text-foreground"
-                  : "text-primary-foreground/90"
+                  ? "text-foreground hover:text-primary"
+                  : "text-primary-foreground/90 hover:text-primary-foreground"
               )}
             >
               {link.name}
@@ -68,38 +78,46 @@ export function Header() {
           ))}
         </nav>
 
-        {/* CTA Buttons */}
-        <div className="hidden md:flex items-center gap-4">
-          <a href="tel:02112345678" className="flex items-center gap-2">
-            <Button variant={isScrolled ? "outline" : "secondary"} size="sm" className="gap-2">
-              <Phone className="w-4 h-4" />
-              <span className="persian-nums">۰۲۱-۱۲۳۴۵۶۷۸</span>
-            </Button>
-          </a>
+        {/* CTA Buttons - RTL aligned (right side) */}
+        <div className="hidden lg:flex items-center gap-3">
           <Link to="/booking">
-            <Button size="sm" className="btn-primary">
+            <Button size="default" className="btn-primary text-base px-6">
               ثبت درخواست
             </Button>
           </Link>
+          <a href="tel:1850">
+            <Button 
+              size="default" 
+              className={cn(
+                "gap-2 text-base px-6 font-bold",
+                isScrolled 
+                  ? "bg-accent text-foreground hover:bg-accent/90 border-0" 
+                  : "bg-accent text-foreground hover:bg-accent/90"
+              )}
+            >
+              <Phone className="w-5 h-5" />
+              <span className="persian-nums text-foreground font-bold">1850</span>
+            </Button>
+          </a>
         </div>
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden p-2"
+          className="lg:hidden p-2"
           onClick={() => setIsOpen(!isOpen)}
-          aria-label="Toggle menu"
+          aria-label="باز کردن منو"
         >
           {isOpen ? (
-            <X className={cn("w-6 h-6", isScrolled ? "text-foreground" : "text-primary-foreground")} />
+            <X className={cn("w-7 h-7", isScrolled ? "text-foreground" : "text-primary-foreground")} />
           ) : (
-            <Menu className={cn("w-6 h-6", isScrolled ? "text-foreground" : "text-primary-foreground")} />
+            <Menu className={cn("w-7 h-7", isScrolled ? "text-foreground" : "text-primary-foreground")} />
           )}
         </button>
       </div>
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden absolute top-full right-0 left-0 bg-background shadow-lg animate-fade-in">
+        <div className="lg:hidden absolute top-full right-0 left-0 bg-background shadow-xl animate-fade-in border-t border-border">
           <nav className="flex flex-col p-4">
             {navLinks.map((link) => (
               <Link
@@ -107,7 +125,7 @@ export function Header() {
                 to={link.href}
                 onClick={() => setIsOpen(false)}
                 className={cn(
-                  "py-3 px-4 rounded-lg text-sm font-medium transition-colors",
+                  "py-4 px-4 rounded-lg text-base font-medium transition-colors",
                   location.pathname === link.href
                     ? "bg-primary/10 text-primary"
                     : "text-foreground hover:bg-muted"
@@ -116,15 +134,15 @@ export function Header() {
                 {link.name}
               </Link>
             ))}
-            <div className="mt-4 pt-4 border-t border-border flex flex-col gap-2">
-              <a href="tel:02112345678">
-                <Button variant="outline" className="w-full gap-2">
-                  <Phone className="w-4 h-4" />
-                  <span className="persian-nums">۰۲۱-۱۲۳۴۵۶۷۸</span>
+            <div className="mt-4 pt-4 border-t border-border flex flex-col gap-3">
+              <a href="tel:1850">
+                <Button className="w-full gap-2 bg-accent text-foreground hover:bg-accent/90 font-bold text-lg">
+                  <Phone className="w-5 h-5" />
+                  <span className="persian-nums font-bold">تماس فوری: 1850</span>
                 </Button>
               </a>
               <Link to="/booking" onClick={() => setIsOpen(false)}>
-                <Button className="w-full btn-primary">ثبت درخواست</Button>
+                <Button className="w-full btn-primary text-base">ثبت درخواست</Button>
               </Link>
             </div>
           </nav>
