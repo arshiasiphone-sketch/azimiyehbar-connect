@@ -23,10 +23,9 @@ export function HeroSection() {
               <span>بیمه کامل محموله</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight">
-              <span className="text-gradient">عظیمیه بار</span>{" "}
-              <span className="text-accent persian-nums font-black">۱۸۵۰</span>
-              : حمل سریع و مطمئن
+            <h1 className="text-3xl md:text-4xl lg:text-6xl font-bold leading-tight">
+              <span className="text-gradient">عظیمیه بار</span>
+              <span className="text-accent persian-nums font-black mx-2">:1850</span>
             </h1>
 
             <p className="text-lg md:text-xl text-primary-foreground/80 max-w-lg leading-relaxed">
