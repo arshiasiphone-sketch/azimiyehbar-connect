@@ -27,6 +27,10 @@ export function HeroSection() {
               <span className="text-gradient">عظیمیه بار</span>
               <span className="text-accent persian-nums font-black mx-2">:1850</span>
             </h1>
+            
+            <p className="text-sm md:text-base text-accent font-medium">
+              می‌توانید مستقیم با شماره <a href="tel:1850" className="font-black underline hover:no-underline persian-nums">1850</a> برای برقراری ارتباط تماس بگیرید
+            </p>
 
             <p className="text-lg md:text-xl text-primary-foreground/80 max-w-lg leading-relaxed">
               با بیش از <strong className="text-primary-foreground">۱۵ سال تجربه</strong> در صنعت حمل و نقل، 
