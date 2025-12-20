@@ -1,4 +1,5 @@
 import { Phone, ClipboardList, Truck, CheckCircle } from "lucide-react";
+import { AnimatedSection } from "@/components/ui/AnimatedSection";
 
 const steps = [
   {
@@ -27,43 +28,45 @@ export function StepsSection() {
   return (
     <section className="section-padding bg-muted/50" aria-labelledby="steps-title">
       <div className="container-custom">
-        <div className="text-center mb-14">
+        <AnimatedSection className="text-center mb-14">
           <h2 id="steps-title" className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4">
-            مراحل <span className="text-gradient">کار با ما</span>
+            مراحل <span className="text-gradient">سفارش باربری در کرج</span>
           </h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
             در چهار مرحله ساده، بار خود را به مقصد برسانید
           </p>
-        </div>
+        </AnimatedSection>
 
-        <div className="grid md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-10">
           {steps.map((step, index) => (
-            <div key={index} className="relative text-center group">
-              {/* Connector Line */}
-              {index < steps.length - 1 && (
-                <div 
-                  className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-border -translate-x-1/2" 
-                  aria-hidden="true"
-                />
-              )}
+            <AnimatedSection key={index} animation="bounce" delay={index * 150}>
+              <div className="relative text-center group">
+                {/* Connector Line */}
+                {index < steps.length - 1 && (
+                  <div 
+                    className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-border -translate-x-1/2" 
+                    aria-hidden="true"
+                  />
+                )}
 
-              <div className="relative z-10">
-                <div className="w-24 h-24 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-5 group-hover:bg-primary/20 transition-colors border-2 border-primary/20">
-                  <step.icon className="w-12 h-12 text-primary" aria-hidden="true" />
+                <div className="relative z-10">
+                  <div className="w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 md:mb-5 group-hover:bg-primary/20 transition-colors border-2 border-primary/20">
+                    <step.icon className="w-10 h-10 md:w-12 md:h-12 text-primary" aria-hidden="true" />
+                  </div>
+                  <div 
+                    className="absolute top-0 right-1/2 translate-x-4 md:translate-x-6 w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm md:text-lg font-bold persian-nums shadow-lg"
+                    aria-label={`مرحله ${index + 1}`}
+                  >
+                    {index + 1}
+                  </div>
                 </div>
-                <div 
-                  className="absolute top-0 right-1/2 translate-x-6 w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-lg font-bold persian-nums shadow-lg"
-                  aria-label={`مرحله ${index + 1}`}
-                >
-                  {index + 1}
-                </div>
+
+                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2 md:mb-3">
+                  {step.title}
+                </h3>
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{step.description}</p>
               </div>
-
-              <h3 className="text-xl font-bold text-foreground mb-3">
-                {step.title}
-              </h3>
-              <p className="text-muted-foreground leading-relaxed">{step.description}</p>
-            </div>
+            </AnimatedSection>
           ))}
         </div>
       </div>
