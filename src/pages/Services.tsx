@@ -3,6 +3,7 @@ import { Header, Footer, FloatingContact } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Truck, Package, Home, Car, Container, Box, Check, ArrowLeft } from "lucide-react";
+import { SEOHead } from "@/components/SEOHead";
 
 const services = [
   {
@@ -52,14 +53,27 @@ const services = [
 const Services = () => {
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="خدمات باربری در کرج | عظیمیه بار 1850 - باربری عظیمیه"
+        description="انواع خدمات باربری در کرج: باربری بین‌شهری، باربری داخل شهری، حمل اثاثیه منزل، وانت‌بار و کامیونت‌بار با بیمه کامل. عظیمیه بار 1850"
+        keywords={[
+          "خدمات باربری در کرج",
+          "باربری بین‌شهری کرج",
+          "حمل اثاثیه کرج",
+          "وانت‌بار کرج",
+          "کامیونت‌بار کرج",
+          "بسته‌بندی اثاثیه کرج",
+        ]}
+        canonicalUrl="https://azimiyabar.ir/services"
+      />
       <Header />
       <main>
         {/* Hero */}
         <section className="gradient-hero pt-32 pb-20">
           <div className="container-custom text-center text-primary-foreground">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">خدمات ما</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">خدمات باربری در کرج</h1>
             <p className="text-primary-foreground/80 max-w-2xl mx-auto">
-              طیف گسترده‌ای از خدمات حمل و نقل با بالاترین کیفیت و مناسب‌ترین قیمت
+              طیف گسترده‌ای از خدمات حمل و نقل با بالاترین کیفیت و مناسب‌ترین قیمت در عظیمیه، مهرشهر و گوهردشت
             </p>
           </div>
         </section>
@@ -73,19 +87,22 @@ const Services = () => {
                   <CardContent className="p-0">
                     <div className="flex flex-col md:flex-row">
                       <div className="md:w-1/3 bg-primary/5 p-6 flex items-center justify-center">
-                        <service.icon className="w-20 h-20 text-primary" />
+                        <service.icon 
+                          className="w-20 h-20 text-primary" 
+                          aria-hidden="true"
+                        />
                       </div>
                       <div className="md:w-2/3 p-6">
-                        <h3 className="text-xl font-bold text-foreground mb-2">
+                        <h2 className="text-xl font-bold text-foreground mb-2">
                           {service.title}
-                        </h3>
+                        </h2>
                         <p className="text-muted-foreground text-sm mb-4">
                           {service.description}
                         </p>
-                        <ul className="space-y-2 mb-4">
+                        <ul className="space-y-2 mb-4" role="list">
                           {service.features.map((feature, i) => (
                             <li key={i} className="flex items-center gap-2 text-sm">
-                              <Check className="w-4 h-4 text-success" />
+                              <Check className="w-4 h-4 text-success" aria-hidden="true" />
                               <span className="text-foreground">{feature}</span>
                             </li>
                           ))}
@@ -94,10 +111,10 @@ const Services = () => {
                           <span className="text-primary font-bold persian-nums">
                             {service.price}
                           </span>
-                          <Link to="/booking">
+                          <Link to="/booking" aria-label={`ثبت درخواست ${service.title}`}>
                             <Button size="sm" className="gap-1">
                               ثبت درخواست
-                              <ArrowLeft className="w-4 h-4" />
+                              <ArrowLeft className="w-4 h-4" aria-hidden="true" />
                             </Button>
                           </Link>
                         </div>
