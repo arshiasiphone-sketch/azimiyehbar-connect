@@ -10,10 +10,10 @@ import { Calendar } from "@/components/ui/calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon, CheckCircle, Truck, Phone, Loader2, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
-import { faIR } from "date-fns/locale";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
+import { SEOHead } from "@/components/SEOHead";
 
 type ServiceType = "intercity" | "local" | "furniture" | "van" | "truck" | "packing";
 
@@ -29,7 +29,6 @@ const serviceOptions: { value: ServiceType; label: string }[] = [
 // Persian phone validation
 const validatePhone = (phone: string): boolean => {
   const cleaned = phone.replace(/[\s\-]/g, '');
-  // Accept formats: 09123456789, +989123456789, 9123456789
   const persianMobileRegex = /^(\+98|0)?9\d{9}$/;
   return persianMobileRegex.test(cleaned);
 };
@@ -124,6 +123,9 @@ const Booking = () => {
 
       if (error) throw error;
 
+      // TODO: Add SMS API call here after API key is configured
+      // await sendSmsNotification(formData);
+
       setSuccess(true);
       toast({
         title: "درخواست ثبت شد",
@@ -131,8 +133,8 @@ const Booking = () => {
       });
     } catch (error) {
       toast({
-        title: "خطا",
-        description: "مشکلی در ثبت درخواست رخ داد. لطفاً دوباره تلاش کنید.",
+        title: "خطا در ثبت درخواست",
+        description: "مشکلی در ثبت درخواست رخ داد. لطفاً دوباره تلاش کنید یا با شماره 1850 تماس بگیرید.",
         variant: "destructive",
       });
     } finally {
@@ -143,24 +145,36 @@ const Booking = () => {
   if (success) {
     return (
       <div className="min-h-screen">
+        <SEOHead
+          title="ثبت موفق درخواست باربری | عظیمیه بار کرج"
+          description="درخواست باربری شما با موفقیت ثبت شد. کارشناسان عظیمیه بار به زودی با شما تماس خواهند گرفت."
+        />
         <Header />
         <main className="gradient-hero min-h-[80vh] flex items-center justify-center">
           <Card className="max-w-md w-full mx-4 shadow-2xl">
             <CardContent className="pt-10 pb-8 text-center">
               <div className="w-24 h-24 mx-auto rounded-full bg-success/10 flex items-center justify-center mb-6">
-                <CheckCircle className="w-14 h-14 text-success" />
+                <CheckCircle className="w-14 h-14 text-success" aria-hidden="true" />
               </div>
-              <h2 className="text-2xl font-bold text-foreground mb-3">درخواست شما ثبت شد!</h2>
+              <h1 className="text-2xl font-bold text-foreground mb-3">درخواست شما ثبت شد!</h1>
               <p className="text-muted-foreground mb-6 leading-relaxed">
-                کارشناسان ما در کمتر از ۳۰ دقیقه با شما تماس خواهند گرفت.
+                کارشناسان باربری ما در کمتر از ۳۰ دقیقه با شما تماس خواهند گرفت.
               </p>
               <div className="bg-accent/10 rounded-xl p-4 mb-6">
                 <p className="text-sm text-muted-foreground mb-1">یا خودتان تماس بگیرید:</p>
-                <a href="tel:1850" className="persian-nums text-3xl font-black text-primary hover:underline">
+                <a 
+                  href="tel:1850" 
+                  className="persian-nums text-3xl font-black text-primary hover:underline"
+                  aria-label="تماس با باربری عظیمیه بار"
+                >
                   1850
                 </a>
               </div>
-              <Button onClick={() => setSuccess(false)} className="btn-primary w-full">
+              <Button 
+                onClick={() => setSuccess(false)} 
+                className="btn-primary w-full"
+                aria-label="ثبت درخواست جدید باربری"
+              >
                 ثبت درخواست جدید
               </Button>
             </CardContent>
@@ -173,6 +187,17 @@ const Booking = () => {
 
   return (
     <div className="min-h-screen">
+      <SEOHead
+        title="ثبت درخواست باربری در کرج | عظیمیه بار 1850"
+        description="ثبت درخواست آنلاین باربری در کرج، عظیمیه، مهرشهر و گوهردشت. فرم رزرو رایگان با پاسخگویی در ۳۰ دقیقه. عظیمیه بار 1850"
+        keywords={[
+          "ثبت درخواست باربری کرج",
+          "رزرو باربری عظیمیه",
+          "درخواست آنلاین باربری",
+          "فرم باربری کرج",
+        ]}
+        canonicalUrl="https://azimiyabar.ir/booking"
+      />
       <Header />
       <main>
         {/* Hero */}
@@ -180,15 +205,21 @@ const Booking = () => {
           <div className="container-custom text-center text-primary-foreground">
             <Truck className="w-20 h-20 mx-auto mb-6 text-accent" aria-hidden="true" />
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-              ثبت درخواست باربری
+              ثبت درخواست باربری در کرج
             </h1>
             <p className="text-primary-foreground/80 max-w-2xl mx-auto text-lg leading-relaxed mb-6">
-              فرم زیر را پر کنید تا کارشناسان ما در اسرع وقت با شما تماس بگیرند
+              فرم زیر را پر کنید تا کارشناسان باربری عظیمیه بار در اسرع وقت با شما تماس بگیرند
             </p>
             <div className="inline-flex items-center gap-3 bg-primary-foreground/10 rounded-full px-6 py-3">
-              <Phone className="w-5 h-5 text-accent" />
+              <Phone className="w-5 h-5 text-accent" aria-hidden="true" />
               <span>یا با شماره</span>
-              <a href="tel:1850" className="persian-nums font-black text-2xl text-accent hover:underline">1850</a>
+              <a 
+                href="tel:1850" 
+                className="persian-nums font-black text-2xl text-accent hover:underline"
+                aria-label="تماس مستقیم با باربری عظیمیه بار"
+              >
+                1850
+              </a>
               <span>تماس بگیرید</span>
             </div>
           </div>
@@ -199,26 +230,30 @@ const Booking = () => {
           <div className="container-custom max-w-2xl">
             <Card className="shadow-xl">
               <CardHeader className="pb-4">
-                <CardTitle className="text-2xl">اطلاعات درخواست</CardTitle>
+                <CardTitle className="text-2xl">اطلاعات درخواست باربری</CardTitle>
                 <CardDescription className="text-base leading-relaxed">
-                  <ul className="mt-2 space-y-1">
+                  <ul className="mt-2 space-y-1" role="list">
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-primary" />
+                      <CheckCircle className="w-4 h-4 text-primary" aria-hidden="true" />
                       <span>پاسخگویی در کمتر از ۳۰ دقیقه</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-primary" />
+                      <CheckCircle className="w-4 h-4 text-primary" aria-hidden="true" />
                       <span>مشاوره رایگان و قیمت‌دهی شفاف</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <CheckCircle className="w-4 h-4 text-primary" />
+                      <CheckCircle className="w-4 h-4 text-primary" aria-hidden="true" />
                       <span>بیمه کامل محموله شما</span>
                     </li>
                   </ul>
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form 
+                  onSubmit={handleSubmit} 
+                  className="space-y-6"
+                  aria-label="فرم ثبت درخواست باربری در کرج"
+                >
                   <div className="grid md:grid-cols-2 gap-5">
                     <div className="space-y-2">
                       <Label htmlFor="full_name" className="text-base">نام و نام خانوادگی *</Label>
@@ -233,10 +268,11 @@ const Booking = () => {
                         className={cn("input-rtl h-12", errors.full_name && "border-destructive")}
                         aria-invalid={!!errors.full_name}
                         aria-describedby={errors.full_name ? "full_name-error" : undefined}
+                        aria-required="true"
                       />
                       {errors.full_name && (
-                        <p id="full_name-error" className="text-sm text-destructive flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
+                        <p id="full_name-error" className="text-sm text-destructive flex items-center gap-1" role="alert">
+                          <AlertCircle className="w-4 h-4" aria-hidden="true" />
                           {errors.full_name}
                         </p>
                       )}
@@ -253,14 +289,15 @@ const Booking = () => {
                           maxLength={13}
                           aria-invalid={!!errors.phone}
                           aria-describedby={errors.phone ? "phone-error" : undefined}
+                          aria-required="true"
                         />
                         <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
                           ایران
                         </span>
                       </div>
                       {errors.phone && (
-                        <p id="phone-error" className="text-sm text-destructive flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
+                        <p id="phone-error" className="text-sm text-destructive flex items-center gap-1" role="alert">
+                          <AlertCircle className="w-4 h-4" aria-hidden="true" />
                           {errors.phone}
                         </p>
                       )}
@@ -280,10 +317,11 @@ const Booking = () => {
                         placeholder="آدرس مبدأ (شهر و محله)"
                         className={cn("input-rtl h-12", errors.origin && "border-destructive")}
                         aria-invalid={!!errors.origin}
+                        aria-required="true"
                       />
                       {errors.origin && (
-                        <p className="text-sm text-destructive flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
+                        <p className="text-sm text-destructive flex items-center gap-1" role="alert">
+                          <AlertCircle className="w-4 h-4" aria-hidden="true" />
                           {errors.origin}
                         </p>
                       )}
@@ -300,10 +338,11 @@ const Booking = () => {
                         placeholder="آدرس مقصد (شهر و محله)"
                         className={cn("input-rtl h-12", errors.destination && "border-destructive")}
                         aria-invalid={!!errors.destination}
+                        aria-required="true"
                       />
                       {errors.destination && (
-                        <p className="text-sm text-destructive flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
+                        <p className="text-sm text-destructive flex items-center gap-1" role="alert">
+                          <AlertCircle className="w-4 h-4" aria-hidden="true" />
                           {errors.destination}
                         </p>
                       )}
@@ -320,7 +359,10 @@ const Booking = () => {
                           if (errors.service_type) setErrors({ ...errors, service_type: "" });
                         }}
                       >
-                        <SelectTrigger className={cn("h-12", errors.service_type && "border-destructive")}>
+                        <SelectTrigger 
+                          className={cn("h-12", errors.service_type && "border-destructive")}
+                          aria-label="انتخاب نوع سرویس باربری"
+                        >
                           <SelectValue placeholder="انتخاب کنید" />
                         </SelectTrigger>
                         <SelectContent>
@@ -332,8 +374,8 @@ const Booking = () => {
                         </SelectContent>
                       </Select>
                       {errors.service_type && (
-                        <p className="text-sm text-destructive flex items-center gap-1">
-                          <AlertCircle className="w-4 h-4" />
+                        <p className="text-sm text-destructive flex items-center gap-1" role="alert">
+                          <AlertCircle className="w-4 h-4" aria-hidden="true" />
                           {errors.service_type}
                         </p>
                       )}
@@ -342,8 +384,12 @@ const Booking = () => {
                       <Label className="text-base">تاریخ جابجایی</Label>
                       <Popover>
                         <PopoverTrigger asChild>
-                          <Button variant="outline" className="w-full h-12 justify-start text-right font-normal">
-                            <CalendarIcon className="ml-2 h-5 w-5 text-muted-foreground" />
+                          <Button 
+                            variant="outline" 
+                            className="w-full h-12 justify-start text-right font-normal"
+                            aria-label="انتخاب تاریخ جابجایی"
+                          >
+                            <CalendarIcon className="ml-2 h-5 w-5 text-muted-foreground" aria-hidden="true" />
                             {date ? format(date, "yyyy/MM/dd") : "انتخاب تاریخ (اختیاری)"}
                           </Button>
                         </PopoverTrigger>
@@ -368,6 +414,7 @@ const Booking = () => {
                       placeholder="توضیحات بیشتر درباره بار، تعداد اقلام، وسایل خاص و..."
                       rows={4}
                       className="input-rtl resize-none"
+                      aria-label="توضیحات اضافی درباره بار"
                     />
                   </div>
 
@@ -375,10 +422,11 @@ const Booking = () => {
                     type="submit" 
                     className="w-full btn-primary h-14 text-lg font-bold" 
                     disabled={loading}
+                    aria-label="ثبت درخواست رایگان باربری در کرج"
                   >
                     {loading ? (
                       <>
-                        <Loader2 className="w-5 h-5 animate-spin ml-2" />
+                        <Loader2 className="w-5 h-5 animate-spin ml-2" aria-hidden="true" />
                         در حال ثبت درخواست...
                       </>
                     ) : (
@@ -392,10 +440,11 @@ const Booking = () => {
                     </p>
                     <a 
                       href="tel:1850" 
-                      className="inline-flex items-center gap-2 text-2xl font-black persian-nums text-primary hover:underline"
+                      className="inline-flex items-center gap-2 text-primary hover:underline"
+                      aria-label="تماس تلفنی با باربری عظیمیه بار"
                     >
-                      <Phone className="w-6 h-6" />
-                      1850
+                      <Phone className="w-5 h-5" aria-hidden="true" />
+                      <span className="persian-nums text-2xl font-bold">1850</span>
                     </a>
                   </div>
                 </form>
