@@ -3,3 +3,4 @@ export { ServicesSection } from './ServicesSection';
 export { StepsSection } from './StepsSection';
 export { FeaturesSection } from './FeaturesSection';
 export { CTASection } from './CTASection';
+export { default as MapSection } from './MapSection';

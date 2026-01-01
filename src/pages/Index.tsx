@@ -5,6 +5,7 @@ import {
   StepsSection,
   FeaturesSection,
   CTASection,
+  MapSection,
 } from "@/components/sections";
 import { SEOHead } from "@/components/SEOHead";
 
@@ -23,6 +24,7 @@ const Index = () => {
         <StepsSection />
         <FeaturesSection />
         <CTASection />
+        <MapSection />
       </main>
       <Footer />
       <FloatingContact />
