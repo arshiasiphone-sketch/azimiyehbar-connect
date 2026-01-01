@@ -123,8 +123,22 @@ const Booking = () => {
 
       if (error) throw error;
 
-      // TODO: Add SMS API call here after API key is configured
-      // await sendSmsNotification(formData);
+      // Send SMS notification to admin
+      try {
+        const serviceLabel = serviceOptions.find(s => s.value === formData.service_type)?.label || formData.service_type;
+        await supabase.functions.invoke("send-sms", {
+          body: {
+            name: formData.full_name.trim(),
+            phone: cleanPhone,
+            requestType: serviceLabel,
+            details: `مبدأ: ${formData.origin.trim()} - مقصد: ${formData.destination.trim()}`,
+            formType: "booking",
+          },
+        });
+      } catch (smsError) {
+        console.error("SMS notification failed:", smsError);
+        // Don't throw - booking is already saved
+      }
 
       setSuccess(true);
       toast({
@@ -132,6 +146,7 @@ const Booking = () => {
         description: "درخواست شما با موفقیت ثبت شد. به زودی با شما تماس خواهیم گرفت.",
       });
     } catch (error) {
+      console.error("Booking error:", error);
       toast({
         title: "خطا در ثبت درخواست",
         description: "مشکلی در ثبت درخواست رخ داد. لطفاً دوباره تلاش کنید یا با شماره 1850 تماس بگیرید.",
