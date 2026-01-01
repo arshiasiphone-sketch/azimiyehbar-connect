@@ -1,0 +1,7 @@
+{
+  "platform": "static",
+  "static": {
+    "path": "dist",
+    "spa": true
+  }
+}
