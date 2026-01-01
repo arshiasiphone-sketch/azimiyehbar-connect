@@ -38,6 +38,21 @@ const Contact = () => {
 
       if (error) throw error;
 
+      // Send SMS notification to admin
+      try {
+        await supabase.functions.invoke("send-sms", {
+          body: {
+            name: formData.name.trim(),
+            phone: formData.phone.trim(),
+            requestType: formData.message.trim(),
+            formType: "contact",
+          },
+        });
+      } catch (smsError) {
+        console.error("SMS notification failed:", smsError);
+        // Don't throw - message is already saved
+      }
+
       toast({
         title: "پیام ارسال شد",
         description: "پیام شما با موفقیت ثبت شد. به زودی با شما تماس خواهیم گرفت.",
@@ -45,6 +60,7 @@ const Contact = () => {
 
       setFormData({ name: "", phone: "", email: "", message: "" });
     } catch (error) {
+      console.error("Contact error:", error);
       toast({
         title: "خطا در ارسال پیام",
         description: "مشکلی در ارسال پیام رخ داد. لطفاً دوباره تلاش کنید یا با شماره 1850 تماس بگیرید.",

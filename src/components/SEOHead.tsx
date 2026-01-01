@@ -105,11 +105,22 @@ export function SEOHead({
           openingHoursSpecification: [
             {
               "@type": "OpeningHoursSpecification",
-              dayOfWeek: ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday"],
+              dayOfWeek: ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
               opens: "08:00",
-              closes: "20:00",
+              closes: "22:00",
             },
           ],
+          sameAs: [
+            "https://instagram.com/azimiyabar",
+            "https://t.me/azimiyabar",
+          ],
+          contactPoint: {
+            "@type": "ContactPoint",
+            telephone: "+981850",
+            contactType: "customer service",
+            areaServed: "IR",
+            availableLanguage: "Persian",
+          },
           hasOfferCatalog: {
             "@type": "OfferCatalog",
             name: "خدمات باربری",
