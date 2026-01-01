@@ -15,7 +15,18 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
   Table,
   TableBody,
@@ -24,10 +35,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Search, Eye, Download } from "lucide-react";
+import { Search, Eye, Download, Trash2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
-import { format } from "date-fns";
+import { format } from "date-fns-jalali";
 import { Database } from "@/integrations/supabase/types";
 
 type Booking = Database["public"]["Tables"]["bookings"]["Row"];
@@ -57,6 +68,7 @@ const AdminBookings = () => {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null);
+  const [deleteConfirm, setDeleteConfirm] = useState<Booking | null>(null);
 
   const fetchBookings = async () => {
     setLoading(true);
@@ -105,6 +117,27 @@ const AdminBookings = () => {
     }
   };
 
+  const deleteBooking = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from("bookings")
+        .delete()
+        .eq("id", id);
+
+      if (error) throw error;
+
+      toast({ title: "درخواست حذف شد" });
+      fetchBookings();
+      setDeleteConfirm(null);
+    } catch (error) {
+      toast({
+        title: "خطا",
+        description: "مشکلی در حذف رخ داد",
+        variant: "destructive",
+      });
+    }
+  };
+
   const filteredBookings = bookings.filter(
     (booking) =>
       booking.full_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -112,6 +145,15 @@ const AdminBookings = () => {
       booking.origin.toLowerCase().includes(search.toLowerCase()) ||
       booking.destination.toLowerCase().includes(search.toLowerCase())
   );
+
+  const formatJalaliDate = (date: string | null) => {
+    if (!date) return "-";
+    try {
+      return format(new Date(date), "yyyy/MM/dd - HH:mm");
+    } catch {
+      return date;
+    }
+  };
 
   const getStatusBadge = (status: string) => {
     const statusMap: Record<string, { label: string; class: string }> = {
@@ -189,7 +231,7 @@ const AdminBookings = () => {
                   <TableHead>مبدأ</TableHead>
                   <TableHead>مقصد</TableHead>
                   <TableHead>سرویس</TableHead>
-                  <TableHead>تاریخ</TableHead>
+                  <TableHead>تاریخ ثبت</TableHead>
                   <TableHead>وضعیت</TableHead>
                   <TableHead>عملیات</TableHead>
                 </TableRow>
@@ -215,18 +257,30 @@ const AdminBookings = () => {
                       <TableCell>{booking.origin}</TableCell>
                       <TableCell>{booking.destination}</TableCell>
                       <TableCell>{serviceTypeLabels[booking.service_type] || booking.service_type}</TableCell>
-                      <TableCell className="persian-nums">
-                        {booking.booking_date || "-"}
+                      <TableCell className="persian-nums text-xs">
+                        {formatJalaliDate(booking.created_at)}
                       </TableCell>
                       <TableCell>{getStatusBadge(booking.status || "pending")}</TableCell>
                       <TableCell>
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => setSelectedBooking(booking)}
-                        >
-                          <Eye className="w-4 h-4" />
-                        </Button>
+                        <div className="flex gap-1">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setSelectedBooking(booking)}
+                            title="مشاهده جزئیات"
+                          >
+                            <Eye className="w-4 h-4" />
+                          </Button>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setDeleteConfirm(booking)}
+                            className="text-destructive hover:text-destructive"
+                            title="حذف"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   ))
@@ -275,6 +329,16 @@ const AdminBookings = () => {
                   </p>
                 </div>
               </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">تاریخ ثبت</p>
+                  <p className="font-medium persian-nums">{formatJalaliDate(selectedBooking.created_at)}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">آخرین بروزرسانی</p>
+                  <p className="font-medium persian-nums">{formatJalaliDate(selectedBooking.updated_at)}</p>
+                </div>
+              </div>
               {selectedBooking.description && (
                 <div>
                   <p className="text-sm text-muted-foreground">توضیحات</p>
@@ -296,10 +360,44 @@ const AdminBookings = () => {
                   ))}
                 </div>
               </div>
+              <DialogFooter>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    setSelectedBooking(null);
+                    setDeleteConfirm(selectedBooking);
+                  }}
+                  className="gap-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  حذف درخواست
+                </Button>
+              </DialogFooter>
             </div>
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Delete Confirmation */}
+      <AlertDialog open={!!deleteConfirm} onOpenChange={() => setDeleteConfirm(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>آیا مطمئن هستید؟</AlertDialogTitle>
+            <AlertDialogDescription>
+              این عملیات قابل بازگشت نیست. درخواست «{deleteConfirm?.full_name}» برای همیشه حذف خواهد شد.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>انصراف</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => deleteConfirm && deleteBooking(deleteConfirm.id)}
+              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            >
+              حذف
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </AdminLayout>
   );
 };
