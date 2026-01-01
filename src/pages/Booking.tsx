@@ -6,10 +6,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Calendar } from "@/components/ui/calendar";
+import { JalaliCalendar } from "@/components/ui/jalali-calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { CalendarIcon, CheckCircle, Truck, Phone, Loader2, AlertCircle } from "lucide-react";
-import { format } from "date-fns";
+import { format } from "date-fns-jalali";
+import { faIR } from "date-fns-jalali/locale";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
@@ -405,15 +406,15 @@ const Booking = () => {
                             aria-label="انتخاب تاریخ جابجایی"
                           >
                             <CalendarIcon className="ml-2 h-5 w-5 text-muted-foreground" aria-hidden="true" />
-                            {date ? format(date, "yyyy/MM/dd") : "انتخاب تاریخ (اختیاری)"}
+                            {date ? format(date, "yyyy/MM/dd", { locale: faIR }) : "انتخاب تاریخ (اختیاری)"}
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
+                          <JalaliCalendar
                             mode="single"
                             selected={date}
                             onSelect={setDate}
-                            disabled={(date) => date < new Date()}
+                            disabled={(d) => d < new Date()}
                           />
                         </PopoverContent>
                       </Popover>
