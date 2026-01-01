@@ -44,27 +44,30 @@ export function StepsSection() {
                 {/* Connector Line */}
                 {index < steps.length - 1 && (
                   <div 
-                    className="hidden md:block absolute top-12 left-0 w-full h-0.5 bg-border -translate-x-1/2" 
+                    className="hidden md:block absolute top-16 left-0 w-full h-0.5 bg-border -translate-x-1/2" 
                     aria-hidden="true"
                   />
                 )}
 
-                <div className="relative z-10">
-                  <div className="w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-4 md:mb-5 group-hover:bg-primary/20 transition-colors border-2 border-primary/20">
-                    <step.icon className="w-10 h-10 md:w-12 md:h-12 text-primary" aria-hidden="true" />
-                  </div>
+                <div className="relative z-10 flex flex-col items-center">
+                  {/* Step Number - Above Icon */}
                   <div 
-                    className="absolute top-0 right-1/2 translate-x-4 md:translate-x-6 w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm md:text-lg font-bold persian-nums shadow-lg"
+                    className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm md:text-lg font-bold persian-nums shadow-lg mb-3"
                     aria-label={`مرحله ${index + 1}`}
                   >
                     {index + 1}
                   </div>
+                  
+                  {/* Icon Circle */}
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-primary/10 flex items-center justify-center mb-4 md:mb-5 group-hover:bg-primary/20 transition-colors border-2 border-primary/20">
+                    <step.icon className="w-10 h-10 md:w-12 md:h-12 text-primary" aria-hidden="true" />
+                  </div>
                 </div>
 
-                <h3 className="text-lg md:text-xl font-bold text-foreground mb-2 md:mb-3">
+                <h3 className="text-base md:text-xl font-bold text-foreground mb-2 md:mb-3">
                   {step.title}
                 </h3>
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{step.description}</p>
+                <p className="text-xs md:text-base text-muted-foreground leading-relaxed px-2">{step.description}</p>
               </div>
             </AnimatedSection>
           ))}
