@@ -37,23 +37,22 @@ serve(async (req: Request): Promise<Response> => {
 
     console.log(`Sending SMS notification for ${formType} from ${name} (${phone})`);
 
-    // Build message based on form type
-    const messageContent = formType === "booking" 
-      ? `درخواست جدید باربری:\nنام: ${name}\nتلفن: ${phone}\nنوع: ${requestType}\n${details ? `توضیحات: ${details}` : ""}`
-      : `پیام جدید:\nنام: ${name}\nتلفن: ${phone}\nپیام: ${requestType}`;
-
-    // SMS.ir API - Send simple message
-    const smsResponse = await fetch("https://api.sms.ir/v1/send/bulk", {
+    // Use verify API with template
+    const smsResponse = await fetch("https://api.sms.ir/v1/send/verify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",
-        "X-API-KEY": SMSIR_API_KEY,
+        "x-api-key": SMSIR_API_KEY,
       },
       body: JSON.stringify({
-        lineNumber: LINE_NUMBER || "30007732900960",
-        messageText: messageContent,
-        mobiles: [ADMIN_PHONE],
+        mobile: ADMIN_PHONE,
+        templateId: parseInt(TEMPLATE_ID || "0"),
+        parameters: [
+          { name: "NAME", value: name },
+          { name: "PHONE", value: phone },
+          { name: "REQUEST", value: requestType },
+        ],
       }),
     });
 
