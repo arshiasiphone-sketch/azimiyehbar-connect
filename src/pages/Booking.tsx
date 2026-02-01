@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Header, Footer, FloatingContact } from "@/components/layout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,13 +9,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { JalaliCalendar } from "@/components/ui/jalali-calendar";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { CalendarIcon, CheckCircle, Truck, Phone, Loader2, AlertCircle } from "lucide-react";
+import { CalendarIcon, CheckCircle, Truck, Phone, Loader2, AlertCircle, LogIn } from "lucide-react";
 import { format } from "date-fns-jalali";
 import { faIR } from "date-fns-jalali/locale";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { cn } from "@/lib/utils";
 import { SEOHead } from "@/components/SEOHead";
+import type { User } from "@supabase/supabase-js";
 
 type ServiceType = "intercity" | "local" | "furniture" | "van" | "truck" | "packing";
 
@@ -44,6 +46,9 @@ const formatPhoneInput = (value: string): string => {
 
 const Booking = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
+  const [user, setUser] = useState<User | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [date, setDate] = useState<Date>();
@@ -56,6 +61,23 @@ const Booking = () => {
     service_type: "" as ServiceType | "",
     description: "",
   });
+
+  // Check authentication status
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setUser(session?.user ?? null);
+        setAuthLoading(false);
+      }
+    );
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setUser(session?.user ?? null);
+      setAuthLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
 
   const validateForm = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -157,6 +179,64 @@ const Booking = () => {
       setLoading(false);
     }
   };
+
+  // Show loading while checking auth
+  if (authLoading) {
+    return (
+      <div className="min-h-screen">
+        <Header />
+        <main className="gradient-hero min-h-[80vh] flex items-center justify-center">
+          <Loader2 className="w-12 h-12 animate-spin text-accent" />
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
+  // Show login prompt if not authenticated
+  if (!user) {
+    return (
+      <div className="min-h-screen">
+        <SEOHead
+          title="ورود برای ثبت درخواست | عظیمیه بار کرج"
+          description="برای ثبت درخواست باربری لطفاً وارد حساب کاربری خود شوید."
+        />
+        <Header />
+        <main className="gradient-hero min-h-[80vh] flex items-center justify-center">
+          <Card className="max-w-md w-full mx-4 shadow-2xl">
+            <CardContent className="pt-10 pb-8 text-center">
+              <div className="w-24 h-24 mx-auto rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                <LogIn className="w-14 h-14 text-primary" aria-hidden="true" />
+              </div>
+              <h1 className="text-2xl font-bold text-foreground mb-3">ورود به حساب کاربری</h1>
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                برای ثبت درخواست باربری، لطفاً ابتدا وارد حساب کاربری خود شوید یا ثبت‌نام کنید.
+              </p>
+              <Button 
+                onClick={() => navigate("/admin/login")} 
+                className="btn-primary w-full mb-4"
+                aria-label="ورود به حساب کاربری"
+              >
+                <LogIn className="w-5 h-5 ml-2" />
+                ورود / ثبت‌نام
+              </Button>
+              <div className="bg-accent/10 rounded-xl p-4">
+                <p className="text-sm text-muted-foreground mb-1">یا مستقیماً تماس بگیرید:</p>
+                <a 
+                  href="tel:1850" 
+                  className="persian-nums text-3xl font-black text-primary hover:underline"
+                  aria-label="تماس با باربری عظیمیه بار"
+                >
+                  1850
+                </a>
+              </div>
+            </CardContent>
+          </Card>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   if (success) {
     return (
