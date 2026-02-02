@@ -127,7 +127,7 @@ const Booking = () => {
       // Send SMS notification to admin
       try {
         const serviceLabel = serviceOptions.find(s => s.value === formData.service_type)?.label || formData.service_type;
-        await supabase.functions.invoke("send-sms", {
+        const { error: smsInvokeError } = await supabase.functions.invoke("send-sms", {
           body: {
             name: formData.full_name.trim(),
             phone: cleanPhone,
@@ -136,8 +136,15 @@ const Booking = () => {
             formType: "booking",
           },
         });
+
+        if (smsInvokeError) throw smsInvokeError;
       } catch (smsError) {
         console.error("SMS notification failed:", smsError);
+        toast({
+          title: "پیامک ارسال نشد",
+          description: "پیامک ارسال نشد، دوباره امتحان کنید",
+          variant: "destructive",
+        });
         // Don't throw - booking is already saved
       }
 

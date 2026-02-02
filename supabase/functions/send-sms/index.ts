@@ -2,7 +2,8 @@ import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type, x-supabase-client-platform, x-supabase-client-platform-version, x-supabase-client-runtime, x-supabase-client-runtime-version",
 };
 
 interface SmsRequest {
@@ -25,10 +26,28 @@ serve(async (req: Request): Promise<Response> => {
     const TEMPLATE_ID = Deno.env.get("SMSIR_TEMPLATE_ID");
     const LINE_NUMBER = Deno.env.get("SMSIR_LINE_NUMBER");
 
+    const templateId = Number(TEMPLATE_ID);
+
     if (!SMSIR_API_KEY || !ADMIN_PHONE) {
-      console.error("Missing SMS configuration");
+      console.error("Missing SMS configuration", {
+        hasApiKey: !!SMSIR_API_KEY,
+        hasAdminPhone: !!ADMIN_PHONE,
+        hasTemplateId: !!TEMPLATE_ID,
+        hasLineNumber: !!LINE_NUMBER,
+      });
       return new Response(
         JSON.stringify({ error: "پیکربندی پیامک انجام نشده است" }),
+        { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    if (!Number.isFinite(templateId) || templateId <= 0) {
+      console.error("Invalid SMS template id", { TEMPLATE_ID });
+      return new Response(
+        JSON.stringify({
+          error: "پیکربندی پیامک نادرست است",
+          details: { message: "templateId معتبر نیست" },
+        }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
@@ -47,7 +66,7 @@ serve(async (req: Request): Promise<Response> => {
       },
       body: JSON.stringify({
         mobile: ADMIN_PHONE,
-        templateId: parseInt(TEMPLATE_ID || "0"),
+        templateId,
         parameters: [
           { name: "NAME", value: name },
           { name: "PHONE", value: phone },
