@@ -1,7 +1,8 @@
 {
-  "platform": "static",
-  "static": {
-    "path": "dist",
-    "spa": true
-  }
+  "app": "azimiehbar",
+  "port": 3000,
+  "build": {
+    "location": "iran"
+  },
+  "disks": []
 }
