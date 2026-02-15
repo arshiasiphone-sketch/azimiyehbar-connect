@@ -107,7 +107,7 @@ const Contact = () => {
                 {[
                   { icon: Phone, title: "تلفن باربری", value: "1850", href: "tel:1850" },
                   { icon: Mail, title: "ایمیل", value: "info@azimiyabar.ir", href: "mailto:info@azimiyabar.ir" },
-                  { icon: MapPin, title: "آدرس", value: "کرج، عظیمیه، خیابان اصلی" },
+                  { icon: MapPin, title: "آدرس", value: "البرز، کرج، عظیمیه، خیابان ارکیده" },
                   { icon: Clock, title: "ساعات کاری", value: "شنبه تا پنجشنبه: ۸ صبح تا ۸ شب" },
                 ].map((item, index) => (
                   <Card key={index}>
@@ -221,7 +221,7 @@ const Contact = () => {
         {/* Map */}
         <section className="h-96 bg-muted">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d25903.38!2d50.93!3d35.84!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3f8d9b0a0a0a0a0a%3A0x0!2z2LnYuNuM2YXbjNmHINio2KfYsQ!5e0!3m2!1sfa!2sir!4v1234567890"
+            src={`https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1500!2d51.002889!3d35.834832!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z!5e0!3m2!1sfa!2sir!4v1700000000000`}
             width="100%"
             height="100%"
             style={{ border: 0 }}

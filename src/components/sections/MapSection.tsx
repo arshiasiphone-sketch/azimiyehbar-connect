@@ -8,9 +8,9 @@ import { AnimatedSection } from "@/components/ui/AnimatedSection";
 // 2. روی مکان مورد نظر کلیک راست کنید
 // 3. اولین گزینه مختصات است (مثلاً: 35.8327, 50.9915)
 const MAP_CONFIG = {
-  lat: 35.8327,    // عرض جغرافیایی
-  lng: 50.9915,    // طول جغرافیایی
-  zoom: 15,        // سطح زوم (1-20)
+  lat: 35.834832,    // عرض جغرافیایی
+  lng: 51.002889,    // طول جغرافیایی
+  zoom: 16,          // سطح زوم (1-20)
   title: "عظیمیه بار - باربری در کرج"
 };
 
@@ -30,7 +30,7 @@ const MapSection = () => {
               دفتر مرکزی باربری عظیمیه بار
             </h2>
             <p className="text-muted-foreground mt-2 max-w-lg mx-auto">
-              کرج، عظیمیه، خیابان مهرشهر - آماده ارائه خدمات ۲۴ ساعته
+              البرز، کرج، عظیمیه، خیابان ارکیده - آماده ارائه خدمات ۲۴ ساعته
             </p>
           </div>
         </AnimatedSection>
@@ -61,7 +61,7 @@ const MapSection = () => {
                 <div>
                   <h3 className="font-bold text-foreground text-sm">عظیمیه بار</h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    کرج، عظیمیه
+                    البرز، کرج، عظیمیه، خیابان ارکیده
                   </p>
                   <a
                     href={`https://www.google.com/maps?q=${MAP_CONFIG.lat},${MAP_CONFIG.lng}`}
