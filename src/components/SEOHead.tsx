@@ -45,8 +45,8 @@ export function SEOHead({
       {/* Geo Tags */}
       <meta name="geo.region" content="IR-06" />
       <meta name="geo.placename" content="کرج، البرز، ایران" />
-      <meta name="geo.position" content="35.834832;51.002889" />
-      <meta name="ICBM" content="35.834832, 51.002889" />
+      <meta name="geo.position" content="35.834795;51.002883" />
+      <meta name="ICBM" content="35.834795, 51.002883" />
       
       {/* Open Graph */}
       <meta property="og:title" content={title} />
@@ -99,8 +99,8 @@ export function SEOHead({
           },
           geo: {
             "@type": "GeoCoordinates",
-            latitude: "35.834832",
-            longitude: "51.002889",
+            latitude: "35.834795",
+            longitude: "51.002883",
           },
           openingHoursSpecification: [
             {
