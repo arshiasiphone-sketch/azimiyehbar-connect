@@ -15,7 +15,7 @@ const MAP_CONFIG = {
 };
 
 const MapSection = () => {
-  const mapUrl = `https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3236.5!2d${MAP_CONFIG.lng}!3d${MAP_CONFIG.lat}!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzXCsDQ5JzU3LjciTiA1MMKwNTknMjkuNCJF!5e0!3m2!1sfa!2sir!4v1700000000000!5m2!1sfa!2sir&z=${MAP_CONFIG.zoom}`;
+  const mapUrl = `https://maps.google.com/maps?q=${MAP_CONFIG.lat},${MAP_CONFIG.lng}&z=${MAP_CONFIG.zoom}&output=embed&hl=fa`;
 
   return (
     <section className="py-16 bg-muted/30">
