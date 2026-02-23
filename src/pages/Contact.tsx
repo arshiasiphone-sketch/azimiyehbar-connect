@@ -107,7 +107,7 @@ const Contact = () => {
                 {[
                   { icon: Phone, title: "تلفن باربری", value: "1850", href: "tel:1850" },
                   { icon: Mail, title: "ایمیل", value: "info@azimiyabar.ir", href: "mailto:info@azimiyabar.ir" },
-                  { icon: MapPin, title: "آدرس", value: "البرز، کرج، عظیمیه، خیابان ارکیده" },
+                  { icon: MapPin, title: "آدرس", value: "عظیمیه، میدان طالقانی، جنب راهنمایی رانندگی" },
                   { icon: Clock, title: "ساعات کاری", value: "شنبه تا پنجشنبه: ۸ صبح تا ۸ شب" },
                 ].map((item, index) => (
                   <Card key={index}>
