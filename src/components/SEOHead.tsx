@@ -91,7 +91,7 @@ export function SEOHead({
           ],
           address: {
             "@type": "PostalAddress",
-            streetAddress: "عظیمیه، خیابان ارکیده",
+            streetAddress: "عظیمیه، میدان طالقانی، جنب راهنمایی رانندگی",
             addressLocality: "کرج",
             addressRegion: "البرز",
             postalCode: "3149713731",

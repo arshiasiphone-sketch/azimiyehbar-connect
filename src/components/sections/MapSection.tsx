@@ -30,7 +30,7 @@ const MapSection = () => {
               دفتر مرکزی باربری عظیمیه بار
             </h2>
             <p className="text-muted-foreground mt-2 max-w-lg mx-auto">
-              البرز، کرج، عظیمیه، خیابان ارکیده - آماده ارائه خدمات ۲۴ ساعته
+              عظیمیه، میدان طالقانی، جنب راهنمایی رانندگی - آماده ارائه خدمات ۲۴ ساعته
             </p>
           </div>
         </AnimatedSection>
@@ -61,7 +61,7 @@ const MapSection = () => {
                 <div>
                   <h3 className="font-bold text-foreground text-sm">عظیمیه بار</h3>
                   <p className="text-xs text-muted-foreground mt-1">
-                    البرز، کرج، عظیمیه، خیابان ارکیده
+                    عظیمیه، میدان طالقانی، جنب راهنمایی رانندگی
                   </p>
                   <a
                     href={`https://www.google.com/maps?q=${MAP_CONFIG.lat},${MAP_CONFIG.lng}`}
